@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+
+  3307_fgtadb:
+    image: mariadb_10_6               # beri nama image hasil build
+    container_name: 3307_fgtadb      # beri nama container
+    hostname: 3307_fgtadb            # beri nama hostname
+    ports:
+      - 3307:3306
+    networks:
+      - devnetwork
+    environment:
+      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=yes
+      - MARIADB_ROOT_PASSWORD=
+    volumes:
+      - fgtadbdata:/var/lib/mysql
+      - /var/database/backup:/var/database/backup
+      - /var/database/shared:/var/database/shared
+      - /var/database/scripts:/var/database/scripts
+      - /var/database/logs:/var/database/logs      
+    working_dir: /var/database/scripts
+
+networks:
+  devnetwork:
+    name: devnetwork
+    external: true
+
+volumes:
+  fgtadbdata:
+    name: fgtadbdata
+    external: true
